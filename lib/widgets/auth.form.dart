@@ -1,23 +1,33 @@
+import 'package:chat/widgets/user_image_picker.dart';
 import 'package:flutter/material.dart';
 
 import '../models/auth_form_data.dart';
 
 class AuthForm extends StatefulWidget {
-  const AuthForm({super.key});
+
+  final void Function(AuthFormData) onSubmit;
+
+  const AuthForm({
+    super.key,
+    required this.onSubmit
+  });
 
   @override
   State<AuthForm> createState() => _AuthFormState();
 }
 
 class _AuthFormState extends State<AuthForm> {
-
   final _formKey = GlobalKey<FormState>();
-  final _authData = AuthFormData();
+  final _formData = AuthFormData();
 
-  void _submitForm(){
+  void _submitForm() {
+    final isValid = _formKey.currentState?.validate() ?? false;
+    if (!isValid) return;
+    
+    widget.onSubmit(_formData);
 
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -28,38 +38,64 @@ class _AuthFormState extends State<AuthForm> {
           key: _formKey,
           child: Column(
             children: [
-              if(_authData.isSignUp)
-              TextFormField(
-                key: const ValueKey('name'),
-                decoration: const InputDecoration(labelText: 'Nome'),
-                initialValue: _authData.name,
-                onChanged: (value) => _authData.name = value,
-              ),
+              if (_formData.isSignUp)
+              UserImagePicker(),
+              if (_formData.isSignUp)
+                TextFormField(
+                  key: const ValueKey('name'),
+                  decoration: const InputDecoration(labelText: 'Nome'),
+                  initialValue: _formData.name,
+                  onChanged: (value) => _formData.name = value,
+                  validator: (value) {
+                    final name = value ?? '';
+                    if (name.trim().length < 5) {
+                      return 'Nome deve ser maior que 5';
+                    }
+                    return null;
+                  },
+                ),
               TextFormField(
                 key: const ValueKey('email'),
-                initialValue: _authData.email,
-                onChanged: (value) => _authData.email = value,
+                initialValue: _formData.email,
+                onChanged: (value) => _formData.email = value,
                 decoration: const InputDecoration(labelText: 'E-mail'),
+                validator: (value) {
+                  final email = value ?? '';
+
+                  if (!email.contains("@")) {
+                    return 'E-mail inválido';
+                  }
+                  return null;
+                },
               ),
               TextFormField(
                 key: const ValueKey('password'),
-                initialValue: _authData.password,
-                onChanged: (value) => _authData.password = value,
+                initialValue: _formData.password,
+                onChanged: (value) => _formData.password = value,
                 decoration: const InputDecoration(labelText: 'Senha'),
                 obscureText: true,
+                validator: (value) {
+                  final password = value ?? '';
+                  if (password.length < 6) {
+                    return 'A senha possui menos de 6 caracteres';
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 12),
               ElevatedButton(
                 onPressed: _submitForm,
-                child: Text(_authData.isLogin ? 'Entrar' : 'Cadastrar'),
+                child: Text(_formData.isLogin ? 'Entrar' : 'Cadastrar'),
               ),
               TextButton(
                 onPressed: () {
                   setState(() {
-                    _authData.toggleAuthMode();
+                    _formData.toggleAuthMode();
                   });
                 },
-                child: Text(_authData.isLogin ? 'Criar uma nova conta?' : 'Já possui uma conta?'),
+                child: Text(_formData.isLogin
+                    ? 'Criar uma nova conta?'
+                    : 'Já possui uma conta?'),
               )
             ],
           ),
