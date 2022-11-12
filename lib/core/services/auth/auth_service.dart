@@ -1,0 +1,14 @@
+import 'dart:io';
+import 'package:chat/core/models/chat_user.dart';
+
+abstract class AuthService {
+
+  ChatUser? get currentUser;
+
+  Future<void> signUp(String nome, String email, String password, File image);
+
+  Future<void> login(String email, String password);
+
+  Future<void> logout();
+
+}

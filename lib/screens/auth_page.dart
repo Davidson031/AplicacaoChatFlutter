@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import '../models/auth_form_data.dart';
+import '../core/models/auth_form_data.dart';
 import '../widgets/auth.form.dart';
 
 class AuthPage extends StatefulWidget {
@@ -15,10 +15,23 @@ class _AuthPageState extends State<AuthPage> {
 
   bool _isLoading = false;
 
-  void _handleSubmit(AuthFormData formData) {
-    setState(() {
-      _isLoading = true;
-    });
+  Future<void> _handleSubmit(AuthFormData formData) async {
+
+    try {
+      setState(() => _isLoading = true );
+
+      if(formData.isLogin){
+        //Login
+      }else{
+        //SignUp
+      }
+
+    } catch (e) {
+      //tratar erro
+    } finally {
+      setState(() => _isLoading = false );
+    }
+
   }
 
   @override
