@@ -1,3 +1,8 @@
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
+
+import 'package:chat/core/services/auth/auth_service.dart';
+import 'package:chat/widgets/messages.dart';
+import 'package:chat/widgets/new_message.dart';
 import 'package:flutter/material.dart';
 
 class ChatPage extends StatelessWidget {
@@ -5,9 +10,49 @@ class ChatPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text('Chat Page'),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Meu Chat'),
+        actions: [
+          DropdownButton(
+            onChanged: (value){
+              if(value == 'logout'){ 
+                AuthService().logout();
+              }
+            },
+            items: [
+              DropdownMenuItem(
+                value: 'logout',
+                child: Container(
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.exit_to_app,
+                        color: Colors.red
+                      ),
+                      const SizedBox(width: 10),
+                      Text('Sair')
+                    ],
+                  ),
+                ),
+              )
+            ],
+            icon: Icon(
+              Icons.more_vert,
+              color: Theme.of(context).primaryIconTheme.color,
+            ),
+          )
+        ],
+      ),
+      body: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              child: Messages(),
+            ),
+            NewMessage(),
+          ],
+        ),
       ),
     );
   }
