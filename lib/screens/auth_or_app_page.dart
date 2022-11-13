@@ -1,6 +1,6 @@
 import 'package:chat/core/services/auth/auth_mock_service.dart';
+import 'package:chat/core/services/auth/auth_service.dart';
 import 'package:flutter/material.dart';
-
 import '../core/models/chat_user.dart';
 import 'auth_page.dart';
 import 'chat_page.dart';

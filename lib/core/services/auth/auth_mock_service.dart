@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:async';
 import 'dart:math';
 import 'package:chat/core/models/chat_user.dart';
@@ -5,15 +7,23 @@ import 'dart:io';
 import 'package:chat/core/services/auth/auth_service.dart';
 
 class AuthMockService implements AuthService {
-  static ChatUser? _currentUser;
 
-  
-  static Map<String, ChatUser> _users = {};
+  static final _defaultUser = ChatUser(
+    id: '1',
+    name: 'Default',
+    email: 'default@default.com ',
+    imageUrl: 'assets/images/avatar.png',
+  );
+
+  static ChatUser? _currentUser;
+  static Map<String, ChatUser> _users = {
+    _defaultUser.email : _defaultUser,
+  };
   static MultiStreamController<ChatUser?>? _controller;
 
   static final _userStream = Stream<ChatUser?>.multi((controller) {
     _controller = controller;
-    _updateUser(null);
+    _updateUser(_defaultUser);
   });
 
   Stream<ChatUser?> get userChanges {
@@ -36,18 +46,17 @@ class AuthMockService implements AuthService {
   }
 
   @override
-  Future<void> signUp(String nome, String email, String password, File? image) async {
-
+  Future<void> signUp(
+      String nome, String email, String password, File? image) async {
     final newUser = ChatUser(
       id: Random().nextDouble().toString(),
       name: nome,
       email: email,
-      imageUrl: image?.path ?? '/assets/images/...',
+      imageUrl: image?.path ?? 'assets/images/avatar.png',
     );
 
     _users.putIfAbsent(email, () => newUser);
     _updateUser(newUser);
-
   }
 
   static void _updateUser(ChatUser? user) {

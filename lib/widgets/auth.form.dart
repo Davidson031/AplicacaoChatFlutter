@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:chat/core/services/auth/auth_mock_service.dart';
 import 'package:chat/widgets/user_image_picker.dart';
 import 'package:flutter/material.dart';
 
@@ -110,7 +111,7 @@ class _AuthFormState extends State<AuthForm> {
                 child: Text(_formData.isLogin
                     ? 'Criar uma nova conta?'
                     : 'Já possui uma conta?'),
-              )
+              ),
             ],
           ),
         ),
