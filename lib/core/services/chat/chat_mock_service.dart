@@ -9,7 +9,7 @@ class ChatMockService implements ChatService {
 
     ChatMessage(id: '1', text: 'Olá', createdAt: DateTime.now(), userId: '123', userName: 'Davidson', userImageURL: 'assets/images/avatar.png'),
     ChatMessage(id: '2', text: 'Olá', createdAt: DateTime.now(), userId: '456', userName: 'Ana', userImageURL: 'assets/images/avatar.png'),
-    ChatMessage(id: '2', text: 'Olá', createdAt: DateTime.now(), userId: '789', userName: 'Maria', userImageURL: 'assets/images/avatar.png'),
+    ChatMessage(id: '3', text: 'Olá', createdAt: DateTime.now(), userId: '789', userName: 'Maria', userImageURL: 'assets/images/avatar.png'),
   ];
 
   static MultiStreamController<List<ChatMessage>>? _controller;
@@ -35,7 +35,7 @@ class ChatMockService implements ChatService {
         userImageURL: user.imageUrl);
 
     _msgs.add(newMessage);
-    _controller?.add(_msgs);
+    _controller?.add(_msgs.reversed.toList());
 
     return newMessage;
   }

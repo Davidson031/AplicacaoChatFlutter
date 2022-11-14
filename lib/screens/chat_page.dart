@@ -1,9 +1,13 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
+import 'package:chat/core/models/chat_user.dart';
 import 'package:chat/core/services/auth/auth_service.dart';
+import 'package:chat/core/services/chat/chat_mock_service.dart';
 import 'package:chat/widgets/messages.dart';
 import 'package:chat/widgets/new_message.dart';
 import 'package:flutter/material.dart';
+
+import '../core/models/chat_message.dart';
 
 class ChatPage extends StatelessWidget {
   const ChatPage({super.key});
@@ -15,8 +19,8 @@ class ChatPage extends StatelessWidget {
         title: const Text('Meu Chat'),
         actions: [
           DropdownButton(
-            onChanged: (value){
-              if(value == 'logout'){ 
+            onChanged: (value) {
+              if (value == 'logout') {
                 AuthService().logout();
               }
             },
@@ -26,10 +30,7 @@ class ChatPage extends StatelessWidget {
                 child: Container(
                   child: Row(
                     children: [
-                      Icon(
-                        Icons.exit_to_app,
-                        color: Colors.red
-                      ),
+                      Icon(Icons.exit_to_app, color: Colors.red),
                       const SizedBox(width: 10),
                       Text('Sair')
                     ],
