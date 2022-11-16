@@ -1,4 +1,4 @@
-import 'package:chat/core/services/notification/push_notification_service.dart';
+import 'package:chat/core/services/notification/chat_notification_service.dart';
 import 'package:chat/screens/auth_or_app_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => PushNotificationService()),
+        ChangeNotifierProvider(create: (_) => ChatNotificationService()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
