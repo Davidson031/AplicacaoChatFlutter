@@ -1,4 +1,5 @@
 import 'package:chat/core/services/auth/auth_mock_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../core/models/chat_user.dart';
 import '../core/services/auth/auth_firebase_service.dart';
