@@ -9,7 +9,25 @@ import 'package:firebase_storage/firebase_storage.dart';
 class ChatFirebaseService implements ChatService {
   @override
   Stream<List<ChatMessage>> messagesStream() {
-    return Stream<List<ChatMessage>>.empty();
+    final firebaseStore = FirebaseFirestore.instance;
+
+    final snapshots = firebaseStore
+        .collection('chat')
+        .withConverter(
+          fromFirestore: _fromFirestore,
+          toFirestore: _toFirestore,
+        )
+        .snapshots();
+
+    return Stream<List<ChatMessage>>.multi((controller) {
+      snapshots.listen((snapshot) {
+        List<ChatMessage> lista = snapshot.docs.map((doc) {
+          return doc.data();
+        }).toList();
+
+        controller.add(lista);
+      });
+    });
   }
 
   @override
@@ -25,7 +43,6 @@ class ChatFirebaseService implements ChatService {
       userImageURL: user.imageUrl,
     );
 
-
     final docReference = await firebaseStore
         .collection('chat')
         .withConverter(fromFirestore: _fromFirestore, toFirestore: _toFirestore)
@@ -34,7 +51,6 @@ class ChatFirebaseService implements ChatService {
     final docSnapshot = await docReference.get();
 
     return docSnapshot.data()!;
-
   }
 
   ChatMessage _fromFirestore(DocumentSnapshot<Map<String, dynamic>> docSnapshot,
