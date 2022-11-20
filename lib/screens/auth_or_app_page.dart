@@ -1,6 +1,8 @@
 import 'package:chat/core/services/auth/auth_mock_service.dart';
+import 'package:chat/core/services/notification/chat_notification_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../core/models/chat_user.dart';
 import '../core/services/auth/auth_firebase_service.dart';
 import 'auth_page.dart';
@@ -13,6 +15,7 @@ class AuthOrAppPage extends StatelessWidget {
 
   Future<void> init(BuildContext context) async {
     await Firebase.initializeApp();
+    await Provider.of<ChatNotificationService>(context, listen: false).init();
   }
 
   @override

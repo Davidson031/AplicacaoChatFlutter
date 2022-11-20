@@ -75,15 +75,16 @@ class AuthFirebaseService implements AuthService {
     await credentials.user?.updateDisplayName(nome);
     await credentials.user?.updatePhotoURL(imageURL);
 
+    _currentUser = _toChatUser(credentials.user!, nome, imageURL);
     //salvar user no firestore
-    await _saveChatUser(_toChatUser(credentials.user!, imageURL));
+    await _saveChatUser(_currentUser!);
 
   }
 
-  static ChatUser _toChatUser(User user, [String? imageURL]) {
+  static ChatUser _toChatUser(User user, [String? name, String? imageURL]) {
     return ChatUser(
       id: user.uid,
-      name: user.displayName ?? user.email!.split('@')[0],
+      name: name ?? user.displayName ?? user.email!.split('@')[0],
       email: user.email!,
       imageUrl: imageURL ?? user.photoURL ?? 'assets/images/avatar.png',
     );

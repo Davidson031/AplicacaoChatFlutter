@@ -7,6 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 class ChatFirebaseService implements ChatService {
+
   @override
   Stream<List<ChatMessage>> messagesStream() {
     final firebaseStore = FirebaseFirestore.instance;
@@ -17,6 +18,7 @@ class ChatFirebaseService implements ChatService {
           fromFirestore: _fromFirestore,
           toFirestore: _toFirestore,
         )
+        .orderBy('createdAt', descending: true)
         .snapshots();
 
     return Stream<List<ChatMessage>>.multi((controller) {
@@ -24,7 +26,6 @@ class ChatFirebaseService implements ChatService {
         List<ChatMessage> lista = snapshot.docs.map((doc) {
           return doc.data();
         }).toList();
-
         controller.add(lista);
       });
     });
